@@ -133,7 +133,7 @@ def distribution_detect():
                 _outs = _out.split(':')
                 if len(_outs) != 2:
                         continue
-                
+ 
                 ret[ lsbDict[lsbKey] ] = _outs[1].strip()
                 del _outs
 
@@ -144,10 +144,10 @@ def distribution_detect():
                 
                 try:
                         int(_vers[0])
-                except:
-                        pass
-                else:
+                finally:
                         ret[ 'releaseCodeVersion' ] = int(_vers[0])
+
+                del _vers
 
 
         return ret
