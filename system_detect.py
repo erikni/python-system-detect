@@ -59,7 +59,7 @@ def distribution_detect():
                 'Mageia'        : [],
                 'ROSA Linux'    : [],
                 'OpenMandriva'  : [],
-                'Annvix'        : [],
+                'Annvix'        : ['/etc/annvix-release',],
                 'TinyMe'        : [],
                 'Trinity Rescue Kit':[],
                 'Unity Linux'   : [],
@@ -86,7 +86,6 @@ def distribution_detect():
                 'Kubuntu'       : [],
 
                 'United Linux'  : ['/etc/UnitedLinux-release',],
-                'Annvix'        : ['/etc/annvix-release',],
                 'Arch Linux'    : ['/etc/arch-release',],
                 'Arklinux'      : ['/etc/arklinux-release',],
                 'Aurox Linux'   : ['/etc/aurox-release',],
@@ -155,7 +154,7 @@ def system_detect():
         dist = distribution_detect()
         for release in dist:
                 ret[ release ] = dist[ release ]
-         
+
 
         return ret
 
