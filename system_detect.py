@@ -113,20 +113,42 @@ def distribution_detect():
         for name in releases:
                 for filename in releases[name]:
                         if os.path.isfile( filename ):
-                                ret[ 'release' ] = open( filename ).read()
+                                ret[ 'releaseName' ] = open( filename ).read()
 
         if not os.path.isfile( '/usr/bin/lsb_release' ):
                 return ret
 
         lsbDict = {
                 'i'     : 'distribution'        ,
-                'd'     : 'release'             ,
+                'd'     : 'releaseName'         ,
                 'r'     : 'releaseVersion'      ,
-                'c'     : 'releaseName'         ,
+                'c'     : 'releaseCodeName'     ,
         }
+
         for lsbKey in lsbDict:
-                ret[ lsbDict[lsbKey] ] = \
-                        commands.getoutput( '/usr/bin/lsb_release -%s' % lsbKey ).split(':')[-1].strip()
+                _out =  commands.getoutput( '/usr/bin/lsb_release -%s' % lsbKey )
+                if not _out:
+                        continue
+
+                _outs = _out.split(':')
+                if len(_outs) != 2:
+                        continue
+                
+                ret[ lsbDict[lsbKey] ] = _outs[1].strip()
+                del _outs
+
+
+        # release master version
+        if 'releaseVersion' in ret:
+                _vers = ret[ 'releaseVersion' ].split('.')
+                
+                try:
+                        int(_vers[0])
+                except:
+                        pass
+                else:
+                        ret[ 'releaseCodeVersion' ] = int(_vers[0])
+
 
         return ret
 
@@ -145,7 +167,7 @@ def system_detect():
         ret = {
                 'system'                : system        ,
                 'node'                  : node          ,
-                'release'               : release       ,
+                'systemRelease'         : release       ,
                 'systemVersion'         : version       ,
                 'systemMachine'         : machine       ,
                 'systemProcessor'       : processor     ,
@@ -162,6 +184,7 @@ def system_detect():
 if __name__ == '__main__':
 
         import pprint
+        print
 
         print "distribution detect:"
         pprint.pprint( distribution_detect() )
